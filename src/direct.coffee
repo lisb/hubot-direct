@@ -41,8 +41,8 @@ class Direct extends Adapter
   download: (envelope, remoteFile, callback) ->
     @bot.download envelope, remoteFile, callback
 
-  leave: (envelope) ->
-    @bot.leave envelope
+  leave: (envelope, user) ->
+    @bot.leave envelope, user
  
   users: ->
     @bot.userObjects()
