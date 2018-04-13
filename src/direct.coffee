@@ -3,6 +3,10 @@
 endpoint = process.env.HUBOT_DIRECT_ENDPOINT ? "wss://api.direct4b.com/albero-app-server/api"
 accessToken = process.env.HUBOT_DIRECT_TOKEN
 proxyURL = process.env.HUBOT_DIRECT_PROXY_URL or process.env.HTTPS_PROXY or process.env.HTTP_PROXY
+talkWithBot = process.env.HUBOT_DIRECT_TALKWITHBOT
+storage_path = process.env.HUBOT_DIRECT_STORAGE_PATH
+storage_quota = process.env.HUBOT_DIRECT_STORAGE_QUOTA
+ws_config = try JSON.parse(process.env.HUBOT_DIRECT_WS_CONFIG)
 
 # Hubot dependencies
 try
@@ -62,6 +66,10 @@ class Direct extends Adapter
      name:     @robot.name
      access_token: accessToken
      proxyURL: proxyURL
+     talkWithBot: talkWithBot
+     storage_path: storage_path
+     storage_quota: storage_quota
+     ws_config: ws_config
 
    bot = DirectAPI.getInstance();
    bot.setOptions options
