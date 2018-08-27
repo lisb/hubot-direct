@@ -7,6 +7,7 @@ talkWithBot = process.env.HUBOT_DIRECT_TALKWITHBOT
 storage_path = process.env.HUBOT_DIRECT_STORAGE_PATH
 storage_quota = process.env.HUBOT_DIRECT_STORAGE_QUOTA
 ws_config = try JSON.parse(process.env.HUBOT_DIRECT_WS_CONFIG)
+offline = process.env.HUBOT_DIRECT_OFFLINE
 
 # Hubot dependencies
 try
@@ -72,6 +73,18 @@ class Direct extends Adapter
      ws_config: ws_config
 
    bot = DirectAPI.getInstance();
+
+   # directが繋がらない時に強制起動
+   if offline?
+     bot =
+       api: { dataStore: { me: { id: '_robot_id' } } }
+       userObjects: () => return {}
+       talkObjects: () => return {}
+       domainObjects: () => return {}
+       setOptions: () => return
+       on: () => return
+       listen: () => setTimeout () => self.emit "connected", 1000
+
    bot.setOptions options
 
    withAuthor = (callback) ->
