@@ -3,6 +3,7 @@
 endpoint = process.env.HUBOT_DIRECT_ENDPOINT ? "wss://api.direct4b.com/albero-app-server/api"
 accessToken = process.env.HUBOT_DIRECT_TOKEN
 proxyURL = process.env.HUBOT_DIRECT_PROXY_URL or process.env.HTTPS_PROXY or process.env.HTTP_PROXY
+initTimeout = Number(process.env.HUBOT_DIRECT_INIT_TIMEOUT) or 0 #s
 
 # Hubot dependencies
 try
@@ -97,13 +98,23 @@ class Direct extends Adapter
      err[key] = value for key,value of obj
      self.robot.emit "error", err
 
+   bot.on "init_timeout", ->
+     self.robot.emit "error", new Error("Initialize timeout")
+
    bot.on "data_recovered", ->
+     clearTimeout initTimer
      self.emit "connected"
 
    bot.listen()
 
    @bot = bot
    @robot.direct = bot
+
+   if initTimeout > 0
+     timeoutBehavior = ->
+       self.emit "connected" # load scripts
+       bot.emit "init_timeout"
+     initTimer = setTimeout timeoutBehavior, initTimeout * 1000
 
 exports.use = (robot) ->
   new Direct robot
