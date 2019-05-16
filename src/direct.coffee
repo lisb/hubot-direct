@@ -8,6 +8,7 @@ storage_path = process.env.HUBOT_DIRECT_STORAGE_PATH
 storage_quota = process.env.HUBOT_DIRECT_STORAGE_QUOTA
 ws_config = try JSON.parse(process.env.HUBOT_DIRECT_WS_CONFIG)
 offline = process.env.HUBOT_DIRECT_OFFLINE
+initTimeout = Number(process.env.HUBOT_DIRECT_INIT_TIMEOUT) or 0 #s
 
 # Hubot dependencies
 try
@@ -118,13 +119,23 @@ class Direct extends Adapter
      err[key] = value for key,value of obj
      self.robot.emit "error", err
 
+   bot.on "init_timeout", ->
+     self.robot.emit "error", new Error("Initialize timeout")
+
    bot.on "data_recovered", ->
+     clearTimeout initTimer
      self.emit "connected"
 
    bot.listen()
 
    @bot = bot
    @robot.direct = bot
+
+   if initTimeout > 0
+     timeoutBehavior = ->
+       self.emit "connected" # load scripts
+       bot.emit "init_timeout"
+     initTimer = setTimeout timeoutBehavior, initTimeout * 1000
 
 exports.use = (robot) ->
   new Direct robot
