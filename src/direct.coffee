@@ -12,10 +12,12 @@ initTimeout = Number(process.env.HUBOT_DIRECT_INIT_TIMEOUT) or 0 #s
 
 # Hubot dependencies
 try
-  hubot = require 'lisb-hubot'
+  hubot = require.main.require 'lisb-hubot'
 catch
-  hubot = require 'hubot'
+  hubot = require.main.require 'hubot'
 {Robot,Adapter,TextMessage,EnterMessage,LeaveMessage,JoinMessage,TopicMessage} = hubot
+
+require './extensions'
 
 # dependencies
 EventEmitter = require('events').EventEmitter
