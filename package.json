@@ -23,5 +23,8 @@
   "homepage": "https://github.com/lisb/hubot-direct",
   "dependencies": {
     "direct-js": "^1.101.1"
+  },
+  "peerDependencies": {
+    "lisb-hubot": "^3.3.2"
   }
 }
