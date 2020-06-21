@@ -1,6 +1,6 @@
 {
   "name": "hubot-direct",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Direct adapter for GitHub's Hubot",
   "main": "./src/direct",
   "scripts": {
@@ -23,5 +23,8 @@
   "homepage": "https://github.com/lisb/hubot-direct",
   "dependencies": {
     "direct-js": "^1.101.1"
+  },
+  "peerDependencies": {
+    "lisb-hubot": ">=3 <10 || 0.0.0-development"
   }
 }
