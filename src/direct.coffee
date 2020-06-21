@@ -10,7 +10,7 @@ ws_config = try JSON.parse(process.env.HUBOT_DIRECT_WS_CONFIG)
 offline = process.env.HUBOT_DIRECT_OFFLINE
 initTimeout = Number(process.env.HUBOT_DIRECT_INIT_TIMEOUT) or 0 #s
 
-hubot = require.main.require 'hubot'
+hubot = require.main.require 'lisb-hubot'
 { Robot, Adapter } = hubot
 
 # dependencies

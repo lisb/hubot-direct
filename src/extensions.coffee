@@ -1,4 +1,4 @@
-{ Robot, Message, Brain, Response, Adapter } = require.main.require 'hubot/es2015'
+{ Robot, Message, Brain, Response, Adapter } = require.main.require 'lisb-hubot/es2015'
 { JoinMessage } = require './message'
 { jsonMatcher } = require('./robot-direct.js')
 

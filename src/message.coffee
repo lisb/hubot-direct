@@ -1,4 +1,4 @@
-{ Message, TextMessage } = require.main.require 'hubot'
+{ Message, TextMessage } = require.main.require 'lisb-hubot'
 
 
 defineFieldsForDaab = (self) ->
