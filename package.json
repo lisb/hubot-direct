@@ -25,6 +25,6 @@
     "direct-js": "^1.101.1"
   },
   "peerDependencies": {
-    "lisb-hubot": "^3.3.2"
+    "lisb-hubot": ">=3 <10 || 0.0.0-development"
   }
 }
