@@ -10,13 +10,17 @@ ws_config = try JSON.parse(process.env.HUBOT_DIRECT_WS_CONFIG)
 offline = process.env.HUBOT_DIRECT_OFFLINE
 initTimeout = Number(process.env.HUBOT_DIRECT_INIT_TIMEOUT) or 0 #s
 
-hubot = require.main.require 'lisb-hubot'
-{Robot,Adapter,TextMessage,EnterMessage,LeaveMessage,JoinMessage,TopicMessage} = hubot
+hubot = require.main.require 'hubot'
+{ Robot, Adapter } = hubot
 
 # dependencies
 EventEmitter = require('events').EventEmitter
 DirectAPI    = require('direct-js').DirectAPI
 url          = require('url')
+
+{ DirectTextMessage, DirectEnterMessage, DirectLeaveMessage, DirectJoinMessage, DirectTopicMessage } = require './message'
+require './extensions'
+
 
 class Direct extends Adapter
 
@@ -93,23 +97,23 @@ class Direct extends Adapter
 
    bot.on "TextMessage",
      withAuthor (envelope, msg) ->
-       self.receive new TextMessage envelope, msg.content, msg.id
+       self.receive new DirectTextMessage envelope, msg.content, msg.id
 
    bot.on "EnterMessage",
      withAuthor (envelope, msg) ->
-       self.receive new EnterMessage envelope, null, msg.id
+       self.receive new DirectEnterMessage envelope, null, msg.id
 
    bot.on "LeaveMessage",
      withAuthor (envelope, msg) ->
-       self.receive new LeaveMessage envelope, null, msg.id
+       self.receive new DirectLeaveMessage envelope, null, msg.id
 
    bot.on "JoinMessage",
      withAuthor (envelope, msg) ->
-       self.receive new JoinMessage envelope, null, null
+       self.receive new DirectJoinMessage envelope, null, null
 
    bot.on "TopicChangeMessage",
      withAuthor (envelope, topic) ->
-       self.receive new TopicMessage envelope, topic, null
+       self.receive new DirectTopicMessage envelope, topic, null
 
    bot.on "error_occurred", (err, obj) ->
      err[key] = value for key,value of obj
