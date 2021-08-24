@@ -90,7 +90,7 @@ class Direct extends Adapter
 
    withAuthor = (callback) ->
      (talk, user, msg) ->
-       envelope = bot.userForId(user.id)
+       envelope = {}
        envelope[key] = value for key,value of user
        envelope[key] = value for key,value of talk
        callback envelope, msg
