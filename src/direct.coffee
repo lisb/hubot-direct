@@ -50,8 +50,8 @@ class Direct extends Adapter
   leave: (envelope, user) ->
     @bot.leave envelope, user
  
-  users: ->
-    @bot.userObjects()
+  users: (domainId) ->
+    @bot.userObjects(domainId)
 
   talks: ->
     @bot.talkObjects()
