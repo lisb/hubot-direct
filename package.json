@@ -4,7 +4,7 @@
   "description": "Direct adapter for GitHub's Hubot",
   "main": "./src/direct",
   "engines": {
-    "node": ">=12",
+    "node": ">=14",
     "npm": ">=7"
   },
   "scripts": {
