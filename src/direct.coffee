@@ -97,7 +97,7 @@ class Direct extends Adapter
 
     bot.on "TextMessage",
       withAuthor (envelope, msg) ->
-        self.receive new TextMessage envelope, msg.content, msg.id
+        self.receive new TextMessage envelope, msg.content, msg.id, msg.mention
 
     bot.on "EnterMessage",
       withAuthor (envelope, msg) ->
