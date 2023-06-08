@@ -49,7 +49,7 @@ class Direct extends Adapter
 
   leave: (envelope, user) ->
     @bot.leave envelope, user
- 
+
   users: (domainId) ->
     @bot.userObjects(domainId)
 
@@ -60,82 +60,82 @@ class Direct extends Adapter
     @bot.domainObjects()
 
   run: ->
-   self = @
+    self = @
 
-   options =
-     host:     url.parse(endpoint).host
-     endpoint: endpoint
-     name:     @robot.name
-     access_token: accessToken
-     proxyURL: proxyURL
-     talkWithBot: talkWithBot
-     storage_path: storage_path
-     storage_quota: storage_quota
-     ws_config: ws_config
+    options =
+      host:     url.parse(endpoint).host
+      endpoint: endpoint
+      name:     @robot.name
+      access_token: accessToken
+      proxyURL: proxyURL
+      talkWithBot: talkWithBot
+      storage_path: storage_path
+      storage_quota: storage_quota
+      ws_config: ws_config
 
-   bot = DirectAPI.getInstance();
+    bot = DirectAPI.getInstance();
 
-   # directが繋がらない時に強制起動
-   if offline?
-     bot =
-       api: { dataStore: { me: { id: '_robot_id' } } }
-       userObjects: () => return {}
-       talkObjects: () => return {}
-       domainObjects: () => return {}
-       setOptions: () => return
-       on: () => return
-       listen: () => setTimeout () => self.emit "connected", 1000
+    # directが繋がらない時に強制起動
+    if offline?
+      bot =
+        api: { dataStore: { me: { id: '_robot_id' } } }
+        userObjects: () => return {}
+        talkObjects: () => return {}
+        domainObjects: () => return {}
+        setOptions: () => return
+        on: () => return
+        listen: () => setTimeout () => self.emit "connected", 1000
 
-   bot.setOptions options
+    bot.setOptions options
 
-   withAuthor = (callback) ->
-     (talk, user, msg) ->
-       envelope = {}
-       envelope[key] = value for key,value of user
-       envelope[key] = value for key,value of talk
-       callback envelope, msg
+    withAuthor = (callback) ->
+      (talk, user, msg) ->
+        envelope = {}
+        envelope[key] = value for key,value of user
+        envelope[key] = value for key,value of talk
+        callback envelope, msg
 
-   bot.on "TextMessage",
-     withAuthor (envelope, msg) ->
-       self.receive new TextMessage envelope, msg.content, msg.id
+    bot.on "TextMessage",
+      withAuthor (envelope, msg) ->
+        self.receive new TextMessage envelope, msg.content, msg.id
 
-   bot.on "EnterMessage",
-     withAuthor (envelope, msg) ->
-       self.receive new EnterMessage envelope, null, msg.id
+    bot.on "EnterMessage",
+      withAuthor (envelope, msg) ->
+        self.receive new EnterMessage envelope, null, msg.id
 
-   bot.on "LeaveMessage",
-     withAuthor (envelope, msg) ->
-       self.receive new LeaveMessage envelope, null, msg.id
+    bot.on "LeaveMessage",
+      withAuthor (envelope, msg) ->
+        self.receive new LeaveMessage envelope, null, msg.id
 
-   bot.on "JoinMessage",
-     withAuthor (envelope, msg) ->
-       self.receive new JoinMessage envelope, null, null
+    bot.on "JoinMessage",
+      withAuthor (envelope, msg) ->
+        self.receive new JoinMessage envelope, null, null
 
-   bot.on "TopicChangeMessage",
-     withAuthor (envelope, topic) ->
-       self.receive new TopicMessage envelope, topic, null
+    bot.on "TopicChangeMessage",
+      withAuthor (envelope, topic) ->
+        self.receive new TopicMessage envelope, topic, null
 
-   bot.on "error_occurred", (err, obj) ->
-     err[key] = value for key,value of obj
-     self.robot.emit "error", err
+    bot.on "error_occurred", (err, obj) ->
+      err[key] = value for key,value of obj
+      self.robot.emit "error", err
 
-   bot.on "init_timeout", ->
-     self.robot.emit "error", new Error("Initialize timeout")
+    bot.on "init_timeout", ->
+      self.robot.emit "error", new Error("Initialize timeout")
 
-   bot.on "data_recovered", ->
-     clearTimeout initTimer
-     self.emit "connected"
+    bot.on "data_recovered", ->
+      clearTimeout initTimer
+      self.emit "connected"
 
-   bot.listen()
+    bot.listen()
 
-   @bot = bot
-   @robot.direct = bot
+    @bot = bot
+    @robot.direct = bot
 
-   if initTimeout > 0
-     timeoutBehavior = ->
-       self.emit "connected" # load scripts
-       bot.emit "init_timeout"
-     initTimer = setTimeout timeoutBehavior, initTimeout * 1000
+    if initTimeout > 0
+      timeoutBehavior = ->
+        self.emit "connected" # load scripts
+        bot.emit "init_timeout"
+      initTimer = setTimeout timeoutBehavior, initTimeout * 1000
 
 exports.use = (robot) ->
   new Direct robot
