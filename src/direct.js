@@ -1,15 +1,6 @@
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * DS205: Consider reworking code to avoid use of IIFEs
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
- */
 
 // customize
-let hubot;
-const endpoint = process.env.HUBOT_DIRECT_ENDPOINT != null ? process.env.HUBOT_DIRECT_ENDPOINT : 'wss://api.direct4b.com/albero-app-server/api';
+const endpoint = process.env.HUBOT_DIRECT_ENDPOINT ?? 'wss://api.direct4b.com/albero-app-server/api';
 const accessToken = process.env.HUBOT_DIRECT_TOKEN;
 const proxyURL = process.env.HUBOT_DIRECT_PROXY_URL || process.env.HTTPS_PROXY || process.env.HTTP_PROXY;
 const talkWithBot = process.env.HUBOT_DIRECT_TALKWITHBOT;
@@ -23,49 +14,44 @@ const initTimeout = Number(process.env.HUBOT_DIRECT_INIT_TIMEOUT) || 0; // s
 const { Adapter, TextMessage, EnterMessage, LeaveMessage, JoinMessage, TopicMessage } = require('lisb-hubot/es2015');
 
 // dependencies
-const {
-  EventEmitter
-} = require('events');
-const {
-  DirectAPI
-} = require('direct-js');
+const { DirectAPI } = require('direct-js');
 const url = require('url');
 
 class Direct extends Adapter {
   send (envelope, ...strings) {
-    return strings.forEach(string => {
+    strings.forEach(string => {
       if (typeof (string) === 'function') {
-        return string();
+        string();
       } else {
         if (envelope.user != null) {
           this.robot.logger.debug('Sending strings to user: ' + envelope.user.name);
         }
-        return this.bot.send(envelope, string);
+        this.bot.send(envelope, string);
       }
     });
   }
 
   reply (envelope, ...strings) {
     if (envelope.user != null) {
-      return this.send(envelope, ...Array.from(strings.map(str => `@${envelope.user.name} ${str}`)));
+      this.send(envelope, ...Array.from(strings.map(str => `@${envelope.user.name} ${str}`)));
     }
   }
 
   announce (envelope, ...strings) {
-    return Array.from(strings).map((string) =>
+    strings.map((string) =>
       this.bot.announce(envelope, string));
   }
 
   topic (envelope, ...strings) {
-    return this.bot.topic(envelope, strings.join(','));
+    this.bot.topic(envelope, strings.join(','));
   }
 
   download (envelope, remoteFile, callback) {
-    return this.bot.download(envelope, remoteFile, callback);
+    this.bot.download(envelope, remoteFile, callback);
   }
 
   leave (envelope, user) {
-    return this.bot.leave(envelope, user);
+    this.bot.leave(envelope, user);
   }
 
   users (domainId) {
@@ -117,7 +103,7 @@ class Direct extends Adapter {
       const envelope = {};
       for (key in user) { value = user[key]; envelope[key] = value; }
       for (key in talk) { value = talk[key]; envelope[key] = value; }
-      return callback(envelope, msg);
+      callback(envelope, msg);
     };
 
     bot.on('TextMessage',
@@ -142,14 +128,15 @@ class Direct extends Adapter {
 
     bot.on('error_occurred', function (err, obj) {
       for (const key in obj) { const value = obj[key]; err[key] = value; }
-      return self.robot.emit('error', err);
+      self.robot.emit('error', err);
     });
 
     bot.on('init_timeout', () => self.robot.emit('error', new Error('Initialize timeout')));
 
+    let initTimer;
     bot.on('data_recovered', function () {
       clearTimeout(initTimer);
-      return self.emit('connected');
+      self.emit('connected');
     });
 
     bot.listen();
@@ -158,12 +145,11 @@ class Direct extends Adapter {
     this.robot.direct = bot;
 
     if (initTimeout > 0) {
-      var initTimer;
       const timeoutBehavior = function () {
         self.emit('connected'); // load scripts
-        return bot.emit('init_timeout');
+        bot.emit('init_timeout');
       };
-      return initTimer = setTimeout(timeoutBehavior, initTimeout * 1000);
+      initTimer = setTimeout(timeoutBehavior, initTimeout * 1000);
     }
   }
 }
