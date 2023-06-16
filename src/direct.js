@@ -4,9 +4,9 @@ const endpoint = process.env.HUBOT_DIRECT_ENDPOINT ?? 'wss://api.direct4b.com/al
 const accessToken = process.env.HUBOT_DIRECT_TOKEN;
 const proxyURL = process.env.HUBOT_DIRECT_PROXY_URL || process.env.HTTPS_PROXY || process.env.HTTP_PROXY;
 const talkWithBot = process.env.HUBOT_DIRECT_TALKWITHBOT;
-const storage_path = process.env.HUBOT_DIRECT_STORAGE_PATH;
-const storage_quota = process.env.HUBOT_DIRECT_STORAGE_QUOTA;
-const ws_config = (() => { try { return JSON.parse(process.env.HUBOT_DIRECT_WS_CONFIG); } catch (error) {} })();
+const storage_path = process.env.HUBOT_DIRECT_STORAGE_PATH; // eslint-disable-line camelcase
+const storage_quota = process.env.HUBOT_DIRECT_STORAGE_QUOTA; // eslint-disable-line camelcase
+const ws_config = (() => { try { return JSON.parse(process.env.HUBOT_DIRECT_WS_CONFIG); } catch (error) {} })(); // eslint-disable-line camelcase
 const offline = process.env.HUBOT_DIRECT_OFFLINE;
 const initTimeout = Number(process.env.HUBOT_DIRECT_INIT_TIMEOUT) || 0; // s
 
@@ -70,15 +70,15 @@ class Direct extends Adapter {
     const self = this;
 
     const options = {
-      host: url.parse(endpoint).host,
+      host: url.parse(endpoint).host, // eslint-disable-line n/no-deprecated-api
       endpoint,
       name: this.robot.name,
       access_token: accessToken,
       proxyURL,
       talkWithBot,
-      storage_path,
-      storage_quota,
-      ws_config
+      storage_path, // eslint-disable-line camelcase
+      storage_quota, // eslint-disable-line camelcase
+      ws_config // eslint-disable-line camelcase
     };
 
     let bot = DirectAPI.getInstance();
