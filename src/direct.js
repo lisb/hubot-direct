@@ -20,12 +20,7 @@ const offline = process.env.HUBOT_DIRECT_OFFLINE;
 const initTimeout = Number(process.env.HUBOT_DIRECT_INIT_TIMEOUT) || 0; //s
 
 // Hubot dependencies
-try {
-  hubot = require('lisb-hubot');
-} catch (error1) {
-  hubot = require('hubot');
-}
-const {Robot,Adapter,TextMessage,EnterMessage,LeaveMessage,JoinMessage,TopicMessage} = hubot;
+const {Adapter,TextMessage,EnterMessage,LeaveMessage,JoinMessage,TopicMessage} = require('lisb-hubot/es2015');
 
 // dependencies
 const {
