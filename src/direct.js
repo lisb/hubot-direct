@@ -9,6 +9,7 @@ const storage_quota = process.env.HUBOT_DIRECT_STORAGE_QUOTA; // eslint-disable-
 const ws_config = (() => { try { return JSON.parse(process.env.HUBOT_DIRECT_WS_CONFIG); } catch (error) {} })(); // eslint-disable-line camelcase
 const offline = process.env.HUBOT_DIRECT_OFFLINE;
 const initTimeout = Number(process.env.HUBOT_DIRECT_INIT_TIMEOUT) || 0; // s
+const logLevel = process.env.HUBOT_LOG_LEVEL ?? 'info';
 
 // Hubot dependencies
 const { Adapter, TextMessage, EnterMessage, LeaveMessage, JoinMessage, TopicMessage } = require('lisb-hubot/es2015');
@@ -16,6 +17,7 @@ const { Adapter, TextMessage, EnterMessage, LeaveMessage, JoinMessage, TopicMess
 // dependencies
 const { DirectAPI } = require('direct-js');
 const url = require('url');
+const pino = require('pino');
 
 class Direct extends Adapter {
   send (envelope, ...strings) {
@@ -69,6 +71,9 @@ class Direct extends Adapter {
   run () {
     const self = this;
 
+    const logger = pino({ name: 'direct-js', level: logLevel });
+    Reflect.defineProperty(logger, 'verbose', { value: logger.trace, configurable: true, enumerable: true });
+
     const options = {
       host: url.parse(endpoint).host, // eslint-disable-line n/no-deprecated-api
       endpoint,
@@ -78,7 +83,8 @@ class Direct extends Adapter {
       talkWithBot,
       storage_path, // eslint-disable-line camelcase
       storage_quota, // eslint-disable-line camelcase
-      ws_config // eslint-disable-line camelcase
+      ws_config, // eslint-disable-line camelcase
+      internalLogger: logger
     };
 
     let bot = DirectAPI.getInstance();
