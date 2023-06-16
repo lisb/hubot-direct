@@ -19,6 +19,20 @@ const { DirectAPI } = require('direct-js');
 const url = require('url');
 const pino = require('pino');
 
+// logging
+const logger = (() => {
+  const l = pino({ name: 'direct-js', level: logLevel });
+  const formatter = (method) => (args) =>
+    method(args.reduce((acc, arg, i) => { acc[`p${i + 1}`] = arg; return acc; }, {}));
+  return {
+    verbose: formatter(l.trace.bind(l)),
+    debug: formatter(l.debug.bind(l)),
+    info: formatter(l.info.bind(l)),
+    warn: formatter(l.warn.bind(l)),
+    error: formatter(l.error.bind(l))
+  };
+})();
+
 class Direct extends Adapter {
   send (envelope, ...strings) {
     strings.forEach(string => {
@@ -70,9 +84,6 @@ class Direct extends Adapter {
 
   run () {
     const self = this;
-
-    const logger = pino({ name: 'direct-js', level: logLevel });
-    Reflect.defineProperty(logger, 'verbose', { value: logger.trace, configurable: true, enumerable: true });
 
     const options = {
       host: url.parse(endpoint).host, // eslint-disable-line n/no-deprecated-api
