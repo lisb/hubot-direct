@@ -10,6 +10,7 @@ const ws_config = (() => { try { return JSON.parse(process.env.HUBOT_DIRECT_WS_C
 const offline = process.env.HUBOT_DIRECT_OFFLINE;
 const initTimeout = Number(process.env.HUBOT_DIRECT_INIT_TIMEOUT) || 0; // s
 const logLevel = process.env.HUBOT_LOG_LEVEL ?? 'info';
+const directMentionUnification = process.env.HUBOT_DIRECT_MENTION_UNIFICATION ?? false;
 
 // Hubot dependencies
 const { Adapter, TextMessage, EnterMessage, LeaveMessage, JoinMessage, TopicMessage } = require('lisb-hubot/es2015');
@@ -95,7 +96,8 @@ class Direct extends Adapter {
       storage_path, // eslint-disable-line camelcase
       storage_quota, // eslint-disable-line camelcase
       ws_config, // eslint-disable-line camelcase
-      internalLogger: logger
+      internalLogger: logger,
+      directMentionUnification,
     };
 
     let bot = DirectAPI.getInstance();
