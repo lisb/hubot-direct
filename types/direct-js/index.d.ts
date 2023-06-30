@@ -112,8 +112,14 @@ declare namespace directJs {
     delete(params: DeleteNoteParams): Promise<DeleteNoteResult>;
   }
 
+  interface MentionUtil {
+    readonly forAll: string;
+    markup(user: { id: string; name: string } | string): string;
+  }
+
   interface DirectAPI {
     notes: Notes;
+    mention: MentionUtil;
   }
 }
 

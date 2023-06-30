@@ -219,4 +219,10 @@ exports = (robot: Robot<Direct>) => {
         robot.direct.notes.delete({ id: result.note.id }).then((result) => result.note);
       });
   });
+
+  robot.hear(/mention$/, (res) => {
+    const mention = robot.direct.mention;
+    mention.markup(res.message.user);
+    mention.markup(mention.forAll);
+  });
 };
