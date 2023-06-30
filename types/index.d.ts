@@ -239,10 +239,10 @@ declare global {
   namespace Hubot {
     interface Brain<A extends Adapter> {
       users(): { [id: string]: directJs.User };
-      userForId(id: string, options?: object): directJs.User | any; // NOTE: get or create
-      userForName(name: string): directJs.User[] | null;
-      usersForRawFuzzyName(fuzzyName: string): directJs.User[];
-      usersForFuzzyName(fuzzyName: string): directJs.User[];
+      userForId(id: string, domainId?: string): directJs.User | User; // NOTE: get or create
+      userForName(name: string, domainId?: string): directJs.User | null;
+      usersForRawFuzzyName(fuzzyName: string, domainId?: string): directJs.User[];
+      usersForFuzzyName(fuzzyName: string, domainId?: string): directJs.User[];
 
       rooms(): { [id: string]: directJs.Talk };
       domains(): { [id: string]: directJs.Domain };
