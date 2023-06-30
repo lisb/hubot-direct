@@ -16,8 +16,6 @@ import {
 } from '../types/index';
 
 exports = (robot: Robot) => {
-  robot.direct;
-
   robot.send({ room: 'id' }, 'トークを指定して送信');
 
   robot.respond(/send/i, (res) => {
@@ -207,4 +205,17 @@ exports = (robot: Robot) => {
   });
 
   robot.roomTopic({ room: `12345` }, 'test');
+
+  robot.direct.notes.get({ id: 'id' }).then((result) => {
+    result.note.id;
+    result.note.attachments[0];
+    robot.direct.notes.update(result.note, { note_content: 'new' }).then((result) => {
+      console.log(result);
+    });
+    robot.direct.notes
+      .update(result.note, { note_attachments: [...result.note.attachments] })
+      .then((result) => {
+        robot.direct.notes.delete({ id: result.note.id }).then((result) => result.note);
+      });
+  });
 };

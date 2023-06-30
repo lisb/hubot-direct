@@ -67,6 +67,54 @@ declare namespace directJs {
     content_size: number;
     url: string;
   };
+
+  type LocalFile = {
+    path: string;
+    name?: string;
+    type?: string;
+    text?: string;
+  };
+
+  type Note = {
+    id: string;
+    noteRevision: NoteRevision;
+    attachments: RemoteFile[];
+  };
+
+  type NoteRevision = {
+    revision: number;
+    title: string;
+    contentType: number;
+    contentText: string;
+    contentFiles: RemoteFile[];
+  };
+
+  type CreateNoteParams = {
+    note_title: string;
+    note_content: string;
+    note_attachments?: LocalFile[];
+  };
+
+  type GetNoteParams = { id: string };
+  type GetNoteResult = { note: Note };
+
+  type UpdateNoteParams = Partial<
+    Omit<CreateNoteParams, 'note_attachments'> & { note_attachments: (LocalFile | RemoteFile)[] }
+  >;
+  type UpdateNoteResult = { note: Note };
+
+  type DeleteNoteParams = { id: string };
+  type DeleteNoteResult = { note: {} };
+
+  interface Notes {
+    get(params: GetNoteParams): Promise<GetNoteResult>;
+    update(source: Note, params: UpdateNoteParams): Promise<UpdateNoteResult>;
+    delete(params: DeleteNoteParams): Promise<DeleteNoteResult>;
+  }
+
+  interface DirectAPI {
+    notes: Notes;
+  }
 }
 
 export = directJs;

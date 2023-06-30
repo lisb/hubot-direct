@@ -86,18 +86,8 @@ declare namespace daab {
   type CloseSelect = { close_select: MessageId };
   type Task = { title: string; closing_type: TaskClosingType };
   type CloseTask = { close_task: MessageId };
-  type Note = {
-    note_title: string;
-    note_content: string;
-    note_attachments?: AttachmentFile[];
-  };
-
-  type AttachmentFile = {
-    path: string;
-    name?: string;
-    type?: string;
-    text?: string;
-  };
+  type Note = directJs.CreateNoteParams;
+  type AttachmentFile = directJs.LocalFile;
   type AttachmentFiles = {
     path: string[];
     name?: string[];
@@ -112,18 +102,7 @@ declare namespace daab {
   type SentYesNo = SentAction<YesNoAnswer, YesNo>;
   type SentSelect = SentAction<SelectAnswer, Select>;
   type SentTask = SentAction<TaskAnswer, Task>;
-  type SentNote = {
-    note: {
-      id: string;
-      noteRevision: {
-        revision: number;
-        title: string;
-        contentType: number;
-        contentText: string;
-        contentFiles?: RemoteFile[];
-      };
-    };
-  };
+  type SentNote = { note: directJs.Note };
 
   type YesNoAnswer = (trues: directJs.User[], falses: directJs.User[]) => void;
   type SelectAnswer = (options: Array<directJs.User[]>) => void;
@@ -290,7 +269,7 @@ declare global {
     }
 
     interface Robot<A extends Adapter = Adapter> {
-      readonly direct: any;
+      readonly direct: directJs.DirectAPI;
 
       respond(regex: RegExp, callback: daab.ListenerCallback<A, TextMessage>): void;
       respond<R extends daab.RespondType>(
