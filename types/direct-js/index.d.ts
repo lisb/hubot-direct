@@ -3,7 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-declare namespace DirectJs {
+declare namespace directJs {
   interface Int64 {
     high: number;
     low: number;
@@ -69,5 +69,5 @@ declare namespace DirectJs {
   };
 }
 
-export = DirectJs;
-export as namespace DirectJs;
+export = directJs;
+export as namespace directJs;

@@ -1,4 +1,4 @@
-import { Robot } from 'hubot';
+import { Robot } from 'lisb-hubot';
 import {
   OnSend,
   WithReadStatusProperties,
@@ -16,6 +16,8 @@ import {
 } from '../types/index';
 
 exports = (robot: Robot) => {
+  robot.direct;
+
   robot.send({ room: 'id' }, 'トークを指定して送信');
 
   robot.respond(/send/i, (res) => {

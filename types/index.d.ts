@@ -3,7 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import hubot from 'hubot';
+import hubot from 'lisb-hubot';
 import directJs from './direct-js';
 
 declare namespace daab {
@@ -289,7 +289,7 @@ declare global {
       mentions?: daab.Mention[];
     }
 
-    interface Robot<A extends Adapter> {
+    interface Robot<A extends Adapter = Adapter> {
       readonly direct: any;
 
       respond(regex: RegExp, callback: daab.ListenerCallback<A, TextMessage>): void;

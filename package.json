@@ -32,7 +32,7 @@
     "pino": "^8.11.0"
   },
   "devDependencies": {
-    "@types/hubot": "^3.3.2",
+    "lisb-hubot": "lisb/hubot#feature\/remove-types",
     "semistandard": "^17.0.0",
     "typescript": "^5.1.3"
   }
