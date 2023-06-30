@@ -13,9 +13,10 @@ import {
   RemoteFiles,
   Note,
   SentNote,
+  Direct,
 } from '../types/index';
 
-exports = (robot: Robot) => {
+exports = (robot: Robot<Direct>) => {
   robot.send({ room: 'id' }, 'トークを指定して送信');
 
   robot.respond(/send/i, (res) => {

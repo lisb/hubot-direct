@@ -269,7 +269,7 @@ declare global {
     }
 
     interface Robot<A extends Adapter = Adapter> {
-      readonly direct: directJs.DirectAPI;
+      readonly direct: A extends daab.Direct ? directJs.DirectAPI : never;
 
       respond(regex: RegExp, callback: daab.ListenerCallback<A, TextMessage>): void;
       respond<R extends daab.RespondType>(
