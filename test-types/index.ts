@@ -221,6 +221,9 @@ exports = (robot: Robot<Direct>) => {
   });
 
   robot.hear(/mention$/, (res) => {
+    res.message.mentionAll;
+    res.message.mentionMe;
+    res.message.mentions![0].user.id;
     const mention = robot.direct.mention;
     mention.markup(res.message.user);
     mention.markup(mention.forAll);
