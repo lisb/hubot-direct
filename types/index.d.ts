@@ -35,18 +35,15 @@ declare namespace daab {
     leave(user?: { id: string }): void;
   };
 
-  interface Response<A extends hubot.Adapter, M extends hubot.Message>
-    extends Omit<hubot.Response<A, M>, 'message' | 'send'>,
+  interface Response<M extends hubot.Message>
+    extends Omit<hubot.Response<Direct, M>, 'message' | 'send'>,
       ExtendedResponse<M> {}
 
-  interface ResponseWithJson<A extends hubot.Adapter, T extends JsonContent>
-    extends Response<A, hubot.TextMessage> {
+  interface ResponseWithJson<T extends JsonContent> extends Response<hubot.TextMessage> {
     json: T;
   }
 
-  type ListenerCallback<A extends hubot.Adapter, M extends hubot.Message> = (
-    response: Response<A, M>
-  ) => void;
+  type ListenerCallback<M extends hubot.Message> = (response: Response<M>) => void;
 
   type MessageId = string;
   type SelectResponse = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
@@ -209,26 +206,26 @@ declare namespace daab {
     | 'note_updated'
     | 'note_deleted';
 
-  type ListenerCallbackWithJson<R extends RespondType, A extends hubot.Adapter> = R extends 'stamp'
-    ? (res: ResponseWithJson<A, Stamp>) => void
+  type ListenerCallbackWithJson<R extends RespondType> = R extends 'stamp'
+    ? (res: ResponseWithJson<Stamp>) => void
     : R extends 'yesno'
-    ? (res: ResponseWithJson<A, YesNoWithResponse>) => void
+    ? (res: ResponseWithJson<YesNoWithResponse>) => void
     : R extends 'select'
-    ? (res: ResponseWithJson<A, SelectWithResponse>) => void
+    ? (res: ResponseWithJson<SelectWithResponse>) => void
     : R extends 'task'
-    ? (res: ResponseWithJson<A, TaskWithResponse>) => void
+    ? (res: ResponseWithJson<TaskWithResponse>) => void
     : R extends 'file'
-    ? (res: ResponseWithJson<A, RemoteFile>) => void
+    ? (res: ResponseWithJson<RemoteFile>) => void
     : R extends 'files'
-    ? (res: ResponseWithJson<A, RemoteFiles>) => void
+    ? (res: ResponseWithJson<RemoteFiles>) => void
     : R extends 'map'
-    ? (res: ResponseWithJson<A, ActualLocation>) => void
+    ? (res: ResponseWithJson<ActualLocation>) => void
     : R extends 'note_created'
-    ? (res: ResponseWithJson<A, NoteCreated>) => void
+    ? (res: ResponseWithJson<NoteCreated>) => void
     : R extends 'note_updated'
-    ? (res: ResponseWithJson<A, NoteUpdated>) => void
+    ? (res: ResponseWithJson<NoteUpdated>) => void
     : R extends 'note_deleted'
-    ? (res: ResponseWithJson<A, NoteDeleted>) => void
+    ? (res: ResponseWithJson<NoteDeleted>) => void
     : never;
 }
 
@@ -271,20 +268,17 @@ declare global {
     interface Robot<A extends Adapter = Adapter> {
       readonly direct: A extends daab.Direct ? directJs.DirectAPI : never;
 
-      respond(regex: RegExp, callback: daab.ListenerCallback<A, TextMessage>): void;
+      respond(regex: RegExp, callback: daab.ListenerCallback<TextMessage>): void;
       respond<R extends daab.RespondType>(
         type: R,
-        callback: daab.ListenerCallbackWithJson<R, A>
+        callback: daab.ListenerCallbackWithJson<R>
       ): void;
 
-      hear(regex: RegExp, callback: daab.ListenerCallback<A, TextMessage>): void;
-      hear<R extends daab.RespondType>(
-        type: R,
-        callback: daab.ListenerCallbackWithJson<R, A>
-      ): void;
+      hear(regex: RegExp, callback: daab.ListenerCallback<TextMessage>): void;
+      hear<R extends daab.RespondType>(type: R, callback: daab.ListenerCallbackWithJson<R>): void;
 
-      leave(callback: daab.ListenerCallback<A, LeaveMessage>): void;
-      join(callback: daab.ListenerCallback<A, daab.JoinMessage>): void;
+      leave(callback: daab.ListenerCallback<LeaveMessage>): void;
+      join(callback: daab.ListenerCallback<daab.JoinMessage>): void;
 
       send(envelope: { room: string }, ...contents: daab.SendableContent[]): void;
       reply(envelope: { room: string; user: User }, ...contents: daab.SendableContent[]): void;

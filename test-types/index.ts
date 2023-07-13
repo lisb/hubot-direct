@@ -102,7 +102,7 @@ exports = (robot: Robot<Direct>) => {
     res.send({ in_reply_to: res.message.id, done: true });
   });
 
-  const onFile = (res: ResponseWithJson<any, RemoteFile | RemoteFiles>, file: RemoteFile): void => {
+  const onFile = (res: ResponseWithJson<RemoteFile | RemoteFiles>, file: RemoteFile): void => {
     file.name;
     file.content_type;
     file.content_size;
