@@ -3,12 +3,13 @@
   "version": "2.0.0",
   "description": "Direct adapter for GitHub's Hubot",
   "main": "./src/direct",
+  "types": "./types/index.d.ts",
   "engines": {
     "node": ">=14",
     "npm": ">=7"
   },
   "scripts": {
-    "test": "semistandard",
+    "test": "semistandard && tsc -p ./test-types/tsconfig.json",
     "fix": "semistandard --fix 'src/**/*.js'"
   },
   "repository": {
@@ -31,6 +32,8 @@
     "pino": "^8.11.0"
   },
   "devDependencies": {
-    "semistandard": "^17.0.0"
+    "lisb-hubot": "lisb/hubot#feature\/remove-types",
+    "semistandard": "^17.0.0",
+    "typescript": "^5.1.3"
   }
 }
