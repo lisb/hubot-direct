@@ -14,6 +14,8 @@ import {
   Note,
   SentNote,
   Direct,
+  OriginalStamp,
+  SentOriginalStamp,
 } from '../types/index';
 
 exports = (robot: Robot<Direct>) => {
@@ -24,6 +26,8 @@ exports = (robot: Robot<Direct>) => {
     res.send({ text: 'テキスト' });
     res.send({ stamp_set: '3', stamp_index: '1152921507291203198' });
     res.send({ stamp_set: '3', stamp_index: '1152921507291203198', text: 'テキスト付き' });
+    res.send({ stampset_id: '12345', stamp_id: '12345' });
+    res.send({ stampset_id: '12345', stamp_id: '12345', text: 'with text' });
     res.send({ question: 'Yes No 質問' });
     res.send({ close_yesno: 'yesno message id' });
     res.send({ question: 'Select 質問', options: ['A', 'B', 'C'] });
@@ -75,6 +79,21 @@ exports = (robot: Robot<Direct>) => {
   robot.respond('stamp', (res) => {
     res.send(`${res.json.stamp_set} - ${res.json.stamp_index}`);
   });
+
+  robot.hear('original_stamp', (res) => {
+    res.json.stampset_id;
+    res.json.stamp_id;
+    res.json.text;
+
+    const c: OriginalStamp & OnSend<SentOriginalStamp> = {
+      ...res.json,
+      onsend: (sent) => {
+        sent.message.content.stampset_id;
+      },
+    };
+    res.send(c);
+  });
+
   robot.respond('yesno', (res) => {
     if (res.json.response) {
       res.json.response;
