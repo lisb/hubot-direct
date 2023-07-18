@@ -1,5 +1,5 @@
-import { Robot } from 'lisb-hubot';
-import {
+import type { Robot } from 'lisb-hubot';
+import type {
   OnSend,
   WithReadStatusProperties,
   WithOnReadStatusHandler,
@@ -7,7 +7,6 @@ import {
   SentYesNo,
   Text,
   SentText,
-  TaskClosingType,
   ResponseWithJson,
   RemoteFile,
   RemoteFiles,
@@ -32,7 +31,7 @@ exports = (robot: Robot<Direct>) => {
     res.send({ close_yesno: 'yesno message id' });
     res.send({ question: 'Select 質問', options: ['A', 'B', 'C'] });
     res.send({ close_select: 'select message id' });
-    res.send({ title: 'タスク', closing_type: TaskClosingType.Any });
+    res.send({ title: 'タスク', closing_type: 0 });
     res.send({ close_task: 'task message id' });
     res.send({
       path: '/path/to/file',

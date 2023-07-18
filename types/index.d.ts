@@ -47,10 +47,9 @@ declare namespace daab {
 
   type MessageId = string;
   type SelectResponse = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
-  enum TaskClosingType {
-    Any = 0,
-    All = 1,
-  }
+
+  /** 0: any, 1: all */
+  type TaskClosingType = 0 | 1;
 
   type SendableContent =
     | string
@@ -84,7 +83,11 @@ declare namespace daab {
   type CloseYesNo = { close_yesno: MessageId };
   type Select = { question: string; options: string[] };
   type CloseSelect = { close_select: MessageId };
-  type Task = { title: string; closing_type: TaskClosingType };
+  type Task = {
+    title: string;
+    /** 0: any, 1: all */
+    closing_type: TaskClosingType;
+  };
   type CloseTask = { close_task: MessageId };
   type Note = directJs.CreateNoteParams;
   type AttachmentFile = directJs.LocalFile;
