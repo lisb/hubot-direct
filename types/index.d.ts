@@ -58,6 +58,8 @@ declare namespace daab {
     | (Text & SendTextHandler)
     | Stamp
     | (Stamp & SendStampHandler)
+    | OriginalStamp
+    | (OriginalStamp & SendOriginalStampHandler)
     | YesNo
     | (YesNo & SendYesNoHandler)
     | Select
@@ -77,6 +79,7 @@ declare namespace daab {
 
   type Text = { text: string };
   type Stamp = { stamp_set: string; stamp_index: string; text?: string };
+  type OriginalStamp = { stampset_id: string; stamp_id: string; text?: string };
   type YesNo = { question: string };
   type CloseYesNo = { close_yesno: MessageId };
   type Select = { question: string; options: string[] };
@@ -96,6 +99,7 @@ declare namespace daab {
 
   type SentText = Sent<Text>;
   type SentStamp = Sent<Stamp>;
+  type SentOriginalStamp = Sent<OriginalStamp>;
   type SentYesNo = SentAction<YesNoAnswer, YesNo>;
   type SentSelect = SentAction<SelectAnswer, Select>;
   type SentTask = SentAction<TaskAnswer, Task>;
@@ -113,6 +117,10 @@ declare namespace daab {
     | OnSend<SentStamp>
     | WithOnReadStatusHandler<SentStamp>
     | WithReadStatusProperties<SentStamp>;
+  type SendOriginalStampHandler =
+    | OnSend<SentOriginalStamp>
+    | WithOnReadStatusHandler<SentOriginalStamp>
+    | WithReadStatusProperties<SentOriginalStamp>;
   type SendYesNoHandler =
     | OnSend<SentYesNo>
     | WithOnReadStatusHandler<SentYesNo>
@@ -149,6 +157,7 @@ declare namespace daab {
 
   type JsonContent =
     | Stamp
+    | OriginalStamp
     | YesNoWithResponse
     | SelectWithResponse
     | TaskWithResponse
@@ -196,6 +205,7 @@ declare namespace daab {
 
   type RespondType =
     | 'stamp'
+    | 'original_stamp'
     | 'yesno'
     | 'select'
     | 'task'
@@ -208,6 +218,8 @@ declare namespace daab {
 
   type ListenerCallbackWithJson<R extends RespondType> = R extends 'stamp'
     ? (res: ResponseWithJson<Stamp>) => void
+    : R extends 'original_stamp'
+    ? (res: ResponseWithJson<OriginalStamp>) => void
     : R extends 'yesno'
     ? (res: ResponseWithJson<YesNoWithResponse>) => void
     : R extends 'select'
