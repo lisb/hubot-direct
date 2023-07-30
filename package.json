@@ -1,7 +1,9 @@
 {
   "name": "hubot-direct",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Direct adapter for GitHub's Hubot",
+  "author": "L is B corp.",
+  "license": "MIT",
   "main": "./src/direct",
   "types": "./types/index.d.ts",
   "engines": {
@@ -21,18 +23,16 @@
     "direct",
     "daab"
   ],
-  "author": "L is B corp.",
-  "license": "MIT",
+  "homepage": "https://github.com/lisb/hubot-direct",
   "bugs": {
     "url": "https://github.com/lisb/hubot-direct/issues"
   },
-  "homepage": "https://github.com/lisb/hubot-direct",
   "dependencies": {
-    "direct-js": ">=1.114.0 <2",
+    "direct-js": ">=2 <3",
     "pino": "^8.11.0"
   },
   "devDependencies": {
-    "lisb-hubot": "lisb/hubot#feature\/remove-types",
+    "lisb-hubot": ">=5 <6",
     "semistandard": "^17.0.0",
     "typescript": "^5.1.3"
   }
