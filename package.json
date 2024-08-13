@@ -28,7 +28,7 @@
     "url": "https://github.com/lisb/hubot-direct/issues"
   },
   "dependencies": {
-    "direct-js": ">=2 <3",
+    "direct-js": "github:lisb/direct-js#feature/testing",
     "pino": "^8.11.0"
   },
   "devDependencies": {
