@@ -108,9 +108,8 @@ declare namespace directJs {
 
   type XmlValidationResult = {
     ok: boolean;
-    errorType?: string;
+    errorType?: 'limit' | 'parse' | 'version' | 'xsd' | 'descendant' | 'link' | 'checkbox' | 'text-decorator';
     message?: string;
-    details?: string[];
   };
 
   interface Notes {
