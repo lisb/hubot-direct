@@ -7,8 +7,8 @@
   "main": "./src/direct",
   "types": "./types/index.d.ts",
   "engines": {
-    "node": ">=14",
-    "npm": ">=7"
+    "node": ">=18",
+    "npm": ">=10"
   },
   "scripts": {
     "test": "semistandard && tsc -p ./test-types/tsconfig.json",
@@ -28,7 +28,7 @@
     "url": "https://github.com/lisb/hubot-direct/issues"
   },
   "dependencies": {
-    "direct-js": ">=2 <3",
+    "direct-js": ">=2.4.0 <3",
     "pino": "^8.11.0"
   },
   "devDependencies": {

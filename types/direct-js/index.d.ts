@@ -106,10 +106,18 @@ declare namespace directJs {
   type DeleteNoteParams = { id: string };
   type DeleteNoteResult = { note: {} };
 
+  type XmlValidationResult = {
+    ok: boolean;
+    errorType?: 'limit' | 'parse' | 'version' | 'xsd' | 'descendant' | 'link' | 'checkbox' | 'text-decorator';
+    message?: string;
+  };
+
   interface Notes {
     get(params: GetNoteParams): Promise<GetNoteResult>;
     update(source: Note, params: UpdateNoteParams): Promise<UpdateNoteResult>;
     delete(params: DeleteNoteParams): Promise<DeleteNoteResult>;
+
+    validateXml(xml: string): XmlValidationResult;
   }
 
   interface MentionUtil {
