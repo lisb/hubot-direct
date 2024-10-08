@@ -89,8 +89,11 @@ declare namespace directJs {
     contentFiles: RemoteFile[];
   };
 
+  type NoteContentType = 'text' | 'xml';
+
   type CreateNoteParams = {
     note_title: string;
+    note_content_type?: NoteContentType;
     note_content: string;
     note_attachments?: LocalFile[];
   };
@@ -99,7 +102,7 @@ declare namespace directJs {
   type GetNoteResult = { note: Note };
 
   type UpdateNoteParams = Partial<
-    Omit<CreateNoteParams, 'note_attachments'> & { note_attachments: (LocalFile | RemoteFile)[] }
+    Omit<CreateNoteParams, 'note_content_type' | 'note_attachments'> & { note_attachments: (LocalFile | RemoteFile)[] }
   >;
   type UpdateNoteResult = { note: Note };
 

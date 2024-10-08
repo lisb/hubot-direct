@@ -47,6 +47,11 @@ exports = (robot: Robot<Direct>) => {
       note_content: 'consent',
       note_attachments: [{ path: '/path/to/local-file' }],
     });
+    res.send({
+      note_title: 'title',
+      note_content_type: 'xml',
+      note_content: '<note version="1" xmlns="http://ns.direct4b.com/note"></note>',
+    });
     res.topic(`test`);
   });
 
@@ -232,11 +237,9 @@ exports = (robot: Robot<Direct>) => {
     robot.direct.notes.update(result.note, { note_content: 'new' }).then((result) => {
       console.log(result);
     });
-    robot.direct.notes
-      .update(result.note, { note_attachments: [...result.note.attachments] })
-      .then((result) => {
-        robot.direct.notes.delete({ id: result.note.id }).then((result) => result.note);
-      });
+    robot.direct.notes.update(result.note, { note_attachments: [...result.note.attachments] }).then((result) => {
+      robot.direct.notes.delete({ id: result.note.id }).then((result) => result.note);
+    });
   });
 
   robot.hear(/mention$/, (res) => {
@@ -246,5 +249,12 @@ exports = (robot: Robot<Direct>) => {
     const mention = robot.direct.mention;
     mention.markup(res.message.user);
     mention.markup(mention.forAll);
+  });
+
+  robot.hear(/styled-note$/, (res) => {
+    const result = robot.direct.notes.validateXml('xml');
+    result.ok;
+    result.message;
+    result.errorType;
   });
 };
