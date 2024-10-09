@@ -109,9 +109,19 @@ declare namespace directJs {
   type DeleteNoteParams = { id: string };
   type DeleteNoteResult = { note: {} };
 
+  type XmlValidationErrorType =
+    | 'limit'
+    | 'parse'
+    | 'version'
+    | 'xsd'
+    | 'descendant'
+    | 'link'
+    | 'checkbox'
+    | 'text-decorator';
+
   type XmlValidationResult = {
     ok: boolean;
-    errorType?: 'limit' | 'parse' | 'version' | 'xsd' | 'descendant' | 'link' | 'checkbox' | 'text-decorator';
+    errorType?: XmlValidationErrorType;
     message?: string;
   };
 
