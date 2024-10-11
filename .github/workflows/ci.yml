@@ -2,26 +2,44 @@ name: build and test
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [16, 18, 20]
+        node:
+          - 18.x
+          - 20.x
+          - 22.x
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
 
+    runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
-          cache: 'npm'
+          cache: npm
+          cache-dependency-path: '**/package-lock.json'
 
-      - run: |
+      - name: Run tests
+        run: |
           npm ci
           npm test

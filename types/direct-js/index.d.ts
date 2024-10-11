@@ -89,8 +89,11 @@ declare namespace directJs {
     contentFiles: RemoteFile[];
   };
 
+  type NoteContentType = 'text' | 'xml';
+
   type CreateNoteParams = {
     note_title: string;
+    note_content_type?: NoteContentType;
     note_content: string;
     note_attachments?: LocalFile[];
   };
@@ -99,17 +102,35 @@ declare namespace directJs {
   type GetNoteResult = { note: Note };
 
   type UpdateNoteParams = Partial<
-    Omit<CreateNoteParams, 'note_attachments'> & { note_attachments: (LocalFile | RemoteFile)[] }
+    Omit<CreateNoteParams, 'note_content_type' | 'note_attachments'> & { note_attachments: (LocalFile | RemoteFile)[] }
   >;
   type UpdateNoteResult = { note: Note };
 
   type DeleteNoteParams = { id: string };
   type DeleteNoteResult = { note: {} };
 
+  type XmlValidationErrorType =
+    | 'limit'
+    | 'parse'
+    | 'version'
+    | 'xsd'
+    | 'descendant'
+    | 'link'
+    | 'checkbox'
+    | 'text-decorator';
+
+  type XmlValidationResult = {
+    ok: boolean;
+    errorType?: XmlValidationErrorType;
+    message?: string;
+  };
+
   interface Notes {
     get(params: GetNoteParams): Promise<GetNoteResult>;
     update(source: Note, params: UpdateNoteParams): Promise<UpdateNoteResult>;
     delete(params: DeleteNoteParams): Promise<DeleteNoteResult>;
+
+    validateXml(xml: string): XmlValidationResult;
   }
 
   interface MentionUtil {
