@@ -1,6 +1,6 @@
 {
   "name": "hubot-direct",
-  "version": "3.1.0",
+  "version": "4.0.0",
   "description": "Direct adapter for GitHub's Hubot",
   "author": "L is B corp.",
   "license": "MIT",
@@ -28,7 +28,7 @@
     "url": "https://github.com/lisb/hubot-direct/issues"
   },
   "dependencies": {
-    "direct-js": ">=2.4.0 <3",
+    "direct-js": ">=3 <4",
     "pino": "^8.11.0"
   },
   "devDependencies": {
