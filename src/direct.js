@@ -151,8 +151,13 @@ class Direct extends Adapter {
     bot.on('init_timeout', () => self.robot.emit('error', new Error('Initialize timeout')));
 
     let initTimer;
-    bot.on('data_recovered', function () {
+    bot.on('data_recovered', async function () {
       clearTimeout(initTimer);
+      try {
+        await bot.notes.initRichTextValidator();
+      } catch (e) {
+        self.robot.emit('error', e);
+      }
       self.emit('connected');
     });
 
