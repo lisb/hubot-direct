@@ -29,3 +29,4 @@ node_modules
 # others
 /test-types/**/*.js
 *.tgz
+package-lock.json
